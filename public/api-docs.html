@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo API - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .api-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .endpoint {
+            margin-bottom: 40px;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .endpoint-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 3px;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .method-get {
+            background-color: #61affe;
+            color: white;
+        }
+
+        .method-post {
+            background-color: #49cc90;
+            color: white;
+        }
+
+        .method-put {
+            background-color: #fca130;
+            color: white;
+        }
+
+        .method-delete {
+            background-color: #f93e3e;
+            color: white;
+        }
+
+        .endpoint-url {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 3px;
+            color: #333;
+            word-break: break-all;
+        }
+
+        .endpoint-section {
+            margin-top: 15px;
+        }
+
+        .endpoint-section h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .code-block.json {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f5f5f5;
+        }
+
+        .description {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .team-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .team-info h2 {
+            margin-bottom: 20px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .team-member {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid white;
+        }
+
+        .team-member h4 {
+            margin-bottom: 8px;
+        }
+
+        .team-member p {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 3px;
+        }
+
+        .toc {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .toc h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 10px;
+        }
+
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+            color: #764ba2;
+        }
+
+        .parameter {
+            background: #f9f9f9;
+            padding: 10px;
+            border-left: 3px solid #667eea;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+
+        .parameter strong {
+            color: #667eea;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left-color: #28a745;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .error {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📚 Todo API Documentation</h1>
+            <p>Complete API reference for the Todo Application</p>
+            <a href="/" class="back-btn">← Back to Todo App</a>
+        </div>
+
+        <!-- Team Information -->
+        <div class="team-info">
+            <h2>👥 Team Members</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <h4>Md. Abdul Al Noman</h4>
+                    <p><strong>ID:</strong> 232031044</p>
+                    <p><strong>Email:</strong> 232031044@feniuniversity.ac.bd</p>
+                    <p><strong>CGPA:</strong> 3.69</p>
+                </div>
+                <div class="team-member">
+                    <h4>Mahdi Hasan</h4>
+                    <p><strong>ID:</strong> 232031036</p>
+                    <p><strong>Email:</strong> 232031036@feniuniversity.ac.bd</p>
+                    <p><strong>CGPA:</strong> 3.72</p>
+                </div>
+                <div class="team-member">
+                    <h4>Mushfiqur Rahman</h4>
+                    <p><strong>ID:</strong> 232031037</p>
+                    <p><strong>Email:</strong> 232031037@feniuniversity.ac.bd</p>
+                    <p><strong>CGPA:</strong> 3.40</p>
+                </div>
+                <div class="team-member">
+                    <h4>Foysal Mahmud</h4>
+                    <p><strong>ID:</strong> 232031039</p>
+                    <p><strong>Email:</strong> 232031039@feniuniversity.ac.bd</p>
+                    <p><strong>CGPA:</strong> 3.60</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h3>📋 Table of Contents</h3>
+            <ul>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#endpoints">API Endpoints</a></li>
+                <li><a href="#postman-testing">Testing with Postman</a></li>
+            </ul>
+        </div>
+
+        <!-- Getting Started -->
+        <div class="api-section" id="getting-started">
+            <h2>🚀 Getting Started</h2>
+            
+            <h3>Base URL</h3>
+            <div class="code-block json">http://localhost:5000/api</div>
+
+            <h3>Authentication</h3>
+            <p class="description">Currently, no authentication is required. All endpoints are publicly accessible.</p>
+
+            <h3>Request Headers</h3>
+            <table>
+                <tr>
+                    <th>Header</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Content-Type</td>
+                    <td>application/json</td>
+                </tr>
+            </table>
+
+            <h3>Response Format</h3>
+            <p class="description">All responses are in JSON format with a consistent structure:</p>
+            <div class="code-block json">{
+  "success": true,
+  "message": "Description of the response",
+  "data": { /* Response data */ }
+}</div>
+        </div>
+
+        <!-- API Endpoints -->
+        <div class="api-section" id="endpoints">
+            <h2>📡 API Endpoints</h2>
+
+            <!-- Endpoint 1: Get All Todos -->
+            <div class="endpoint">
+                <div class="endpoint-title">
+                    <span class="method method-get">GET</span>
+                    <div class="endpoint-url">/todos</div>
+                </div>
+                <p class="description">Retrieve all todos from the database</p>
+                
+                <div class="endpoint-section">
+                    <h4>Response Example</h4>
+                    <div class="code-block json">{
+  "success": true,
+  "message": "All todos retrieved successfully",
+  "count": 2,
+  "data": [
+    {
+      "id": 1,
+      "title": "Learn Node.js",
+      "description": "Complete Node.js fundamentals course",
+      "priority": "high",
+      "status": "pending",
+      "createdAt": "2026-05-18T00:00:00.000Z",
+      "updatedAt": "2026-05-18T00:00:00.000Z"
+    }
+  ]
+}</div>
+                </div>
+
+                <div class="endpoint-section">
+                    <h4>cURL Example</h4>
+                    <div class="code-block">curl http://localhost:5000/api/todos</div>
+                </div>
+            </div>
+
+            <!-- Endpoint 2: Get Single Todo -->
+            <div class="endpoint">
+                <div class="endpoint-title">
+                    <span class="method method-get">GET</span>
+                    <div class="endpoint-url">/todos/:id</div>
+                </div>
+                <p class="description">Retrieve a single todo by its ID</p>
+
+                <div class="endpoint-section">
+                    <h4>Path Parameters</h4>
+                    <div class="parameter"><strong>id</strong> (integer) - The ID of the todo to retrieve</div>
+                </div>
+
+                <div class="endpoint-section">
+                    <h4>Response Example</h4>
+                    <div class="code-block json">{
+  "success": true,
+  "message": "Todo retrieved successfully",
+  "data": {
+    "id": 1,
+    "title": "Learn Node.js",
+    "description": "Complete Node.js fundamentals course",
+    "priority": "high",
+    "status": "pending",
+    "createdAt": "2026-05-18T00:00:00.000Z",
+    "updatedAt": "2026-05-18T00:00:00.000Z"
+  }
+}</div>
+                </div>
+
+                <div class="endpoint-section">
+                    <h4>cURL Example</h4>
+                    <div class="code-block">curl http://localhost:5000/api/todos/1</div>
+                </div>
+            </div>
+
+            <!-- Endpoint 3: Search & Filter -->
+            <div class="endpoint">
+                <div class="endpoint-title">
+                    <span class="method method-get">GET</span>
+                    <div class="endpoint-url">/todos/search/query</div>
+                </div>
+                <p class="description">Search and filter todos by status, priority, or title</p>
+
+                <div class="endpoint-section">
+                    <h4>Query Parameters</h4>
+                    <div class="parameter"><strong>status</strong> (string) - Filter by status: pending, in-progress, completed</div>
+                    <div class="parameter"><strong>priority</strong> (string) - Filter by priority: low, medium, high</div>
+                    <div class="parameter"><strong>title</strong> (string) - Search by title (case-insensitive)</div>
+                </div>
+
+                <div class="endpoint-section">
+                    <h4>Response Example</h4>
+                    <div class="code-block json">{
+  "success": true,
+  "message": "Todos filtered successfully",
+  "count": 1,
+  "filters": {
+    "status": "pending",
+    "priority": "high",
+    "title": null
+  },
+  "data": [/* filtered todos */]
+}</div>
+                </div>
+
+                <div class="endpoint-section">
+                    <h4>cURL Example</h4>
+                    <div class="code-block">curl "http://localhost:5000/api/todos/search/query?status=pending&priority=high"</div>
+                </div>
+            </div>
+
+            <!-- Endpoint 4: Create Todo -->
+            <div class="endpoint">
+                <div class="endpoint-title">
+                    <span class="method method-post">POST</span>
+                    <div class="endpoint-url">/todos</div>
+                </div>
+                <p class="description">Create a new todo</p>
+
+                <div class="endpoint-section">
+                    <h4>Request Body</h4>
+                    <div class="code-block json">{
+  "title": "Learn Express.js",
+  "description": "Complete Express.js course",
+  "priority": "high"
+}</div>
+                </div>
+
+                <div class="endpoint-section">
+                    <h4>Response Example</h4>
+                    <div class="code-block json">{
+  "success": true,
+  "message": "Todo created successfully",
+  "data": {
+    "id": 3,
+    "title": "Learn Express.js",
+    "description": "Complete Express.js course",
+    "priority": "high",
+    "status": "pending",
+    "createdAt": "2026-05-18T10:35:00.000Z",
+    "updatedAt": "2026-05-18T10:35:00.000Z"
+  }
+}</div>
+                </div>
+
+                <div class="endpoint-section">
+                    <h4>cURL Example</h4>
+                    <div class="code-block">curl -X POST http://localhost:5000/api/todos \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Learn Express.js","description":"Complete Express.js course","priority":"high"}'</div>
+                </div>
+            </div>
+
+            <!-- Endpoint 5: Update Todo -->
+            <div class="endpoint">
+                <div class="endpoint-title">
+                    <span class="method method-put">PUT</span>
+                    <div class="endpoint-url">/todos/:id</div>
+                </div>
+                <p class="description">Update an existing todo</p>
+
+                <div class="endpoint-section">
+                    <h4>Path Parameters</h4>
+                    <div class="parameter"><strong>id</strong> (integer) - The ID of the todo to update</div>
+                </div>
+
+                <div class="endpoint-section">
+                    <h4>Request Body (all fields optional)</h4>
+                    <div class="code-block json">{
+  "title": "Updated Title",
+  "description": "Updated description",
+  "priority": "low",
+  "status": "completed"
+}</div>
+                </div>
+
+                <div class="endpoint-section">
+                    <h4>cURL Example</h4>
+                    <div class="code-block">curl -X PUT http://localhost:5000/api/todos/1 \
+  -H "Content-Type: application/json" \
+  -d '{"status":"completed","priority":"low"}'</div>
+                </div>
+            </div>
+
+            <!-- Endpoint 6: Delete Todo -->
+            <div class="endpoint">
+                <div class="endpoint-title">
+                    <span class="method method-delete">DELETE</span>
+                    <div class="endpoint-url">/todos/:id</div>
+                </div>
+                <p class="description">Delete a todo</p>
+
+                <div class="endpoint-section">
+                    <h4>Path Parameters</h4>
+                    <div class="parameter"><strong>id</strong> (integer) - The ID of the todo to delete</div>
+                </div>
+
+                <div class="endpoint-section">
+                    <h4>cURL Example</h4>
+                    <div class="code-block">curl -X DELETE http://localhost:5000/api/todos/1</div>
+                </div>
+            </div>
+
+            <!-- Endpoint 7: Health Check -->
+            <div class="endpoint">
+                <div class="endpoint-title">
+                    <span class="method method-get">GET</span>
+                    <div class="endpoint-url">/health</div>
+                </div>
+                <p class="description">Check if the API is running</p>
+
+                <div class="endpoint-section">
+                    <h4>Response Example</h4>
+                    <div class="code-block json">{
+  "status": "OK",
+  "message": "Todo API is running",
+  "timestamp": "2026-05-18T10:45:00.000Z",
+  "uptime": 1234.56
+}</div>
+                </div>
+            </div>
+
+            <!-- Endpoint 8: Get Team Info -->
+            <div class="endpoint">
+                <div class="endpoint-title">
+                    <span class="method method-get">GET</span>
+                    <div class="endpoint-url">/team</div>
+                </div>
+                <p class="description">Get team member information</p>
+
+                <div class="endpoint-section">
+                    <h4>Response Example</h4>
+                    <div class="code-block json">{
+  "success": true,
+  "message": "Team Information",
+  "totalMembers": 4,
+  "team": [
+    {
+      "name": "Md. Abdul Al Noman",
+      "id": "232031044",
+      "email": "232031044@feniuniversity.ac.bd",
+      "cgpa": 3.69
+    }
+  ]
+}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Postman Testing -->
+        <div class="api-section" id="postman-testing">
+            <h2>🧪 Testing with Postman</h2>
+            
+            <h3>Installation</h3>
+            <p class="description">Download Postman from <a href="https://www.postman.com/downloads/" target="_blank">https://www.postman.com/downloads/</a></p>
+
+            <h3>Test Requests</h3>
+
+            <h4>1. Create Todo</h4>
+            <table>
+                <tr><th>Property</th><th>Value</th></tr>
+                <tr><td>Method</td><td>POST</td></tr>
+                <tr><td>URL</td><td>http://localhost:5000/api/todos</td></tr>
+                <tr><td>Headers</td><td>Content-Type: application/json</td></tr>
+                <tr><td>Body (JSON)</td><td>{"title":"Learn REST APIs","description":"Master REST API concepts","priority":"high"}</td></tr>
+            </table>
+
+            <h4>2. Get All Todos</h4>
+            <table>
+                <tr><th>Property</th><th>Value</th></tr>
+                <tr><td>Method</td><td>GET</td></tr>
+                <tr><td>URL</td><td>http://localhost:5000/api/todos</td></tr>
+            </table>
+
+            <h4>3. Get Single Todo</h4>
+            <table>
+                <tr><th>Property</th><th>Value</th></tr>
+                <tr><td>Method</td><td>GET</td></tr>
+                <tr><td>URL</td><td>http://localhost:5000/api/todos/1</td></tr>
+            </table>
+
+            <h4>4. Search Todos</h4>
+            <table>
+                <tr><th>Property</th><th>Value</th></tr>
+                <tr><td>Method</td><td>GET</td></tr>
+                <tr><td>URL</td><td>http://localhost:5000/api/todos/search/query?status=pending&priority=high</td></tr>
+            </table>
+
+            <h4>5. Update Todo</h4>
+            <table>
+                <tr><th>Property</th><th>Value</th></tr>
+                <tr><td>Method</td><td>PUT</td></tr>
+                <tr><td>URL</td><td>http://localhost:5000/api/todos/1</td></tr>
+                <tr><td>Headers</td><td>Content-Type: application/json</td></tr>
+                <tr><td>Body (JSON)</td><td>{"status":"completed","priority":"low"}</td></tr>
+            </table>
+
+            <h4>6. Delete Todo</h4>
+            <table>
+                <tr><th>Property</th><th>Value</th></tr>
+                <tr><td>Method</td><td>DELETE</td></tr>
+                <tr><td>URL</td><td>http://localhost:5000/api/todos/1</td></tr>
+            </table>
+
+            <h4>7. Health Check</h4>
+            <table>
+                <tr><th>Property</th><th>Value</th></tr>
+                <tr><td>Method</td><td>GET</td></tr>
+                <tr><td>URL</td><td>http://localhost:5000/api/health</td></tr>
+            </table>
+
+            <h4>8. Get Team Info</h4>
+            <table>
+                <tr><th>Property</th><th>Value</th></tr>
+                <tr><td>Method</td><td>GET</td></tr>
+                <tr><td>URL</td><td>http://localhost:5000/api/team</td></tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
